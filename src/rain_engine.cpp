@@ -45,11 +45,11 @@ uint RainEngine::createTexture(string filename) {
 	return textureID;
 }
 
-uint RainEngine::createSprite(float x, float y, float w, float h, uint texID) {
-	Sprite *spr = new Sprite(x,y,w,h,texID); // setup the sprite
+uint RainEngine::createSprite(uint w, uint h, uint texID) {
+	Sprite *spr = new Sprite(w,h,texID); // setup the sprite
 	++spriteID; // the spriteID is the next number in the series
 	sprites.insert(spriteValType(spriteID,spr)); // add sprite to the map
-	printf("Created sprite (id:%u) width %f height %f at (%f,%f)\n",spriteID,w,h,x,y);
+	printf("Created sprite (id:%u) width %u height %u at (%u,%u)\n",spriteID,w,h,x,y);
 	return spriteID;
 }
 

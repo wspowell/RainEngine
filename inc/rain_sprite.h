@@ -9,15 +9,15 @@
 
 class Sprite {
 	private:
-		float width;
-		float height;
+		uint width;
+		uint height;
 		uint textureID;
 	public:
-		Sprite(float w, float h, uint texID);
+		Sprite(uint w, uint h, uint texID);
 		~Sprite();
 		uint getWidth();
 		uint getHeight();
-		uint getTextureID();
+		uint getTextureIDm();
 };
 
 

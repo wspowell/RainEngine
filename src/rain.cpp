@@ -22,7 +22,7 @@ int main(int argc, char** argv)
 	uint null_texture = rain.createTexture("forest.bmp");
 
 	// use textures to create sprites
-	uint character = rain.createSprite(300,200,800,800,null_texture);
+	uint character = rain.createSprite(800,800,null_texture);
 
 	int num = 100;
 /*

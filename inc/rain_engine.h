@@ -67,7 +67,7 @@ class RainEngine {
 		
 		
 		uint createTexture(string filename);
-		uint createSprite(float x, float y, float w, float h, uint texID);
+		uint createSprite(uint w, uint h, uint texID);
 		uint createScene(uint w, uint h);
 		void addSpriteToScene(uint sceneID, uint spriteID);
 		void renderScene(uint sceneID);
