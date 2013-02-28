@@ -1,0 +1,68 @@
+	GLfloat x_scaled = (xLoc/win.getWidth())*2-1; // top left x
+	GLfloat y_scaled = ((yLoc*(-1))/win.getHeight())*2+1; // top left y
+	GLfloat width_scaled = x_scaled+(width/win.getWidth())*2; // width of sprite
+	GLfloat height_scaled = y_scaled-(height/win.getHeight())*2; // negative height, (*2 because its TWO across)
+
+	glBegin (GL_QUADS);
+	glTexCoord2f (0, 0);
+	glVertex2f (x_scaled, y_scaled);
+	glTexCoord2f (1.0, 0.0);
+	glVertex2f (width_scaled, y_scaled);
+	glTexCoord2f (1.0, 1.0);
+	glVertex2f (width_scaled, height_scaled);
+	glTexCoord2f (0.0, 1.0);
+	glVertex2f (x_scaled, height_scaled);
+	glEnd ();
+
+	/* keep this for future reference, used with triangle rendering
+	GLfloat x_scaled = (xLoc/win.getWidth())*2-1; // top left x
+	GLfloat y_scaled = ((yLoc*(-1))/win.getHeight())*2+1; // top left y
+	GLfloat width_scaled = x_scaled+(width/win.getWidth())*2; // width of sprite
+	GLfloat height_scaled = y_scaled-(height/win.getHeight())*2; // negative height, (*2 because its TWO across)
+
+	// An array of 3 vectors which represents 3 vertices
+	const GLfloat sprite_buffer_data[] = {
+		// top left triangle
+		x_scaled, y_scaled, 0.0f, // top left vertex
+		x_scaled, height_scaled, 0.0f, // bottom left vertex
+		width_scaled, y_scaled, 0.0f, // top right vertex
+		// bottom right triagle
+		x_scaled, height_scaled, 0.0f, // bottom left vertex
+		width_scaled, y_scaled, 0.0f, // top right vertex
+		width_scaled, height_scaled, 0.0f // bottom right vertex
+	};
+
+	printf("Window size: %u,%u\n",win.getWidth(),win.getHeight());
+	printf("Sprite vertex data (%u):\n",spriteID);
+	for(uint x = 0; x < 9; ) {
+		printf("Vertex: %f, %f, %f\n",sprite_buffer_data[x],sprite_buffer_data[x+1],sprite_buffer_data[x+2]);
+		x += 3;
+	}
+
+	// Generate 1 buffer, put the resulting identifier in vertexbuffer
+	glGenBuffers(1, &vertexbuffer);
+
+	// The following commands will talk about our 'vertexbuffer' buffer
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+
+	// Give our vertices to OpenGL.
+	glBufferData(GL_ARRAY_BUFFER, sizeof(sprite_buffer_data), sprite_buffer_data, GL_STATIC_DRAW);
+
+
+	// 1rst attribute buffer : vertices
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+	glVertexAttribPointer(
+	   0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+	   3,                  // size
+	   GL_FLOAT,           // type
+	   GL_FALSE,           // normalized?
+	   0,                  // stride
+	   (void*)0            // array buffer offset
+	);
+	 
+	// Draw the triangles!
+	glDrawArrays(GL_TRIANGLES, 0, 6); // Starting from vertex 0; 6 vertices total -> 2 triangles
+
+	glDisableVertexAttribArray(0);
+	*/
