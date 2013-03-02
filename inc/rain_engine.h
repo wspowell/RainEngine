@@ -75,7 +75,7 @@ class RainEngine {
 		void updateMouse();
 		float getMouseXOffset();
 		float getMouseYOffset();
-		void updateSprite(uint sprID, float x, float y);
+		void updateSprite(uint sprID, uint x, uint y);
 };
 
 

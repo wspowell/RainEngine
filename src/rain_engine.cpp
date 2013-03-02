@@ -49,7 +49,7 @@ uint RainEngine::createSprite(uint w, uint h, uint texID) {
 	Sprite *spr = new Sprite(w,h,texID); // setup the sprite
 	++spriteID; // the spriteID is the next number in the series
 	sprites.insert(spriteValType(spriteID,spr)); // add sprite to the map
-	printf("Created sprite (id:%u) width %u height %u at (%u,%u)\n",spriteID,w,h,x,y);
+	printf("Created sprite (id:%u) width %u height %u with texture (id:%u)\n",spriteID,w,h,texID);
 	return spriteID;
 }
 
@@ -106,7 +106,7 @@ void RainEngine::renderScene(uint scnID) {
 }
 
 void RainEngine::renderSprite(uint sprID) {
-	Sprite *spr = getSprite(sprID);
+	/*Sprite *spr = getSprite(sprID);
 	if(spr == NULL) { return; }
 	GLfloat x_scaled = ((GLfloat)spr->getX()/win.getWidth())*2-1; // top left x
 	GLfloat y_scaled = 1-(((GLfloat)spr->getY())/win.getHeight())*2; // top left y
@@ -122,7 +122,7 @@ void RainEngine::renderSprite(uint sprID) {
 	glVertex2f (width_scaled, height_scaled);
 	glTexCoord2f (0.0, 1.0);
 	glVertex2f (x_scaled, height_scaled);
-	glEnd ();
+	glEnd ();*/
 }
 
 
@@ -138,13 +138,13 @@ float RainEngine::getMouseYOffset() {
 	return mse.getYOffset();
 }
 
-void RainEngine::updateSprite(uint sprID, float x, float y) {
-	Sprite *spr = getSprite(sprID);
+void RainEngine::updateSprite(uint sprID, uint x, uint y) {
+	//Sprite *spr = getSprite(sprID);
 
-	float newX = spr->getX()+x;
-	float newY = spr->getY()+y;
-	spr->setX(newX);
-	spr->setY(newY);
+	//float newX = spr->getX()+x;
+	//float newY = spr->getY()+y;
+	//spr->setX(newX);
+	//spr->setY(newY);
 }
 
 

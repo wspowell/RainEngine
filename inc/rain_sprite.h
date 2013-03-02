@@ -17,7 +17,7 @@ class Sprite {
 		~Sprite();
 		uint getWidth();
 		uint getHeight();
-		uint getTextureIDm();
+		uint getTextureID();
 };
 
 

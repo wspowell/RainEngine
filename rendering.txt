@@ -1,3 +1,107 @@
+//Please note this will only work for the x columns 
+double cell_division = 1.0/number_of_frames;
+double x_cell = current_frame * cell_division;
+double x_cell2= ( current_frame * cell_division ) + cell_division;
+
+glBegin(GL_QUADS);
+glTexCoord2d(x_cell, 0.0);
+glVertex3i(0, 0, 0);  
+glTexCoord2d(x_cell2, 0.0);
+glVertex3i( sprite_width , 0, 0);  
+glTexCoord2d( x_cell2 , 1.0 );
+glVertex3i( sprite_width, sprite_height, 0);  
+glTexCoord2d( x_cell , 1.0);
+glVertex3i(0, sprite_height, 0); 
+glEnd();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+You have to start thinking in "texture space" where the coordinates are in the range [0, 1].
+
+So if you have a sprite sheet:
+
+class SpriteSheet {
+    int spriteWidth, spriteHeight;
+    int texWidth, texHeight;
+
+    int tex;
+
+public:
+    SpriteSheet(int t, int tW, int tH, int sW, int sH)
+    : tex(t), texWidth(tW), texHeight(tH), spriteWidth(sW), spriteHeight(sH)
+    {}
+
+    void drawSprite(float posX, float posY, int frameIndex);
+};
+All you have to do is submit both vertices and texture vertices to OpenGL:
+
+    void SpriteSheet::drawSprite(float posX, float posY, int frameIndex) {
+        const float verts[] = {
+            posX, posY,
+            posX + spriteWidth, posY,
+            posX + spriteWidth, posY + spriteHeight,
+            posX, posY + spriteHeight
+        };
+        const float tw = float(spriteWidth) / texWidth;
+        const float th = float(spriteHeight) / texHeight;
+        const int numPerRow = texWidth / spriteWidth;
+        const float tx = (frameIndex % numPerRow) * tw;
+        const float ty = (frameIndex / numPerRow + 1) * th;
+        const float texVerts[] = {
+            tx, ty,
+            tx + tw, ty,
+            tx + tw, ty + th,
+            tx, ty + th
+        };
+
+        // ... Bind the texture, enable the proper arrays
+
+        glVertexPointer(2, GL_FLOAT, verts);
+        glTextureVertexPointer(2, GL_FLOAT, texVerts);
+        glDrawArrays(GL_TRI_STRIP, 0, 4);
+    }
+
+};	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////
 	GLfloat x_scaled = (xLoc/win.getWidth())*2-1; // top left x
 	GLfloat y_scaled = ((yLoc*(-1))/win.getHeight())*2+1; // top left y
 	GLfloat width_scaled = x_scaled+(width/win.getWidth())*2; // width of sprite

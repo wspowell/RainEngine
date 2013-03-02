@@ -18,13 +18,17 @@ int main(int argc, char** argv)
 		fprintf( stderr, "Failed to initialize Rain Engine.\n" );
 	}   
 
+	
+
 	// create textures
 	uint null_texture = rain.createTexture("forest.bmp");
 
 	// use textures to create sprites
-	uint character = rain.createSprite(800,800,null_texture);
+	uint character = rain.createSprite(30,30,null_texture);
 
-	int num = 100;
+	//uint grass = rain.createTile(
+
+	//int num = 100;
 /*
 	srand(time(NULL));
 	for(int x = 1; x <= num; x++) {

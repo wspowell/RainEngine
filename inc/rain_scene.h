@@ -19,11 +19,13 @@ class Coordinate {
 		~Coordinate();
 		uint getX();
 		uint getY();
+		void setX(uint x);
+		void setY(uint y);
 };
 
 // keeps track of sprite locations, this is so that sprites can be reused in multiple scenes
 // key is the spriteID, value is the Coordinate the sprite is at
-typedef map<uint,Coordinate> coordinateMap;
+typedef std::map<uint,Coordinate*> coordinateMap;
 typedef coordinateMap::value_type coordinateValType;
 typedef coordinateMap::iterator coordinateMapItor;
 
@@ -37,11 +39,13 @@ class Location {
 		~Location();
 		uint getCol();
 		uint getRow();
+		void setCol(uint c);
+		void setRow(uint r);
 };
 
 // keeps track of tile locations, this is so that tiles can be reused in multiple scenes
 // key is the tileID, value is the Location the tile is at 
-typedef map<uint,Location> locationMap;
+typedef std::map<uint,Location*> locationMap;
 typedef locationMap::value_type locationValType;
 typedef locationMap::iterator locationMapItor;
 
@@ -50,14 +54,26 @@ class Scene {
 		uint cols;
 		uint rows;
 		uintVector sprites; // the sprites in this scene
-		uintVector tiles; // tiles 
+		coordinateMap spriteCoords; // coordinates of sprites
+		uintVector tiles; // tiles
+		locationMap tileLocs; // locations of tiles
 	public:
 		Scene(uint w, uint h);
 		~Scene();
+
+		int hasSprite(uint spriteID);
 		void addSprite(uint spriteID);
 		void removeSprite(uint spriteID);
+		void moveSprite(uint spriteID, uint x, uint y);
+		void setSprite(uint spriteID, uint x, uint y);
 		uintVector getSprites();
-		void setBackground();
+
+		int hasTile(uint tileID);
+		void addTile(uint tileID);
+		void removeTile(uint tileID);
+		void moveTile(uint tileID, uint c, uint r);
+		void setTile(uint tileID, uint c, uint r);
+		uintVector getTiles();
 };
 
 

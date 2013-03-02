@@ -10,9 +10,9 @@ Window::~Window() { }
 
 void Window::setTitle(const char* t) { WINDOW_TITLE = t; }
 
-void Window::setHeight(uint h) { WINDOW_HEIGHT = h; }
+void Window::setHeight(uint h) { if(WINDOW_MODE != GLFW_FULLSCREEN) { WINDOW_HEIGHT = h; } }
 
-void Window::setWidth(uint w) { WINDOW_WIDTH = w; }
+void Window::setWidth(uint w) { if(WINDOW_MODE != GLFW_FULLSCREEN) { WINDOW_WIDTH = w; } }
 
 void Window::setAntiAliasing(uint a) { ANTIALIASING = a; }
 
