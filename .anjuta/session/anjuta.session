@@ -1,0 +1,25 @@
+
+[Anjuta]
+Maximized=1
+Geometry=1920x1056+0+24
+
+[File Loader]
+Files=file:///home/wpowell/RainEngine/RainEngine/inc/rain_engine.h#71%%%file:///home/wpowell/RainEngine/RainEngine/inc/rain_scene.h#30%%%file:///home/wpowell/RainEngine/RainEngine/inc/rain_sprite.h#4%%%file:///home/wpowell/RainEngine/RainEngine/inc/rain_texture.h#1%%%file:///home/wpowell/RainEngine/RainEngine/inc/rain_tile.h#1%%%file:///home/wpowell/RainEngine/RainEngine/src/rain.cpp#27%%%file:///home/wpowell/RainEngine/RainEngine/src/rain_engine.cpp#81%%%file:///home/wpowell/RainEngine/RainEngine/src/rain_scene.cpp#63%%%file:///home/wpowell/RainEngine/RainEngine/src/rain_sprite.cpp#15%%%file:///home/wpowell/RainEngine/RainEngine/src/rain_texture.cpp#1%%%file:///home/wpowell/RainEngine/RainEngine/src/rain_tile.cpp#1
+
+[Document Manager]
+bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
+
+[Execution]
+Run in terminal=2
+Working directories=file:///home/wpowell/RainEngine/RainEngine
+
+[Build]
+Configuration list=1:Default:%%%1:Debug:Debug%%%1:Profiling:Profiling%%%1:Optimized:Optimized
+Selected Configuration=Default
+BuildArgs/Default=--enable-maintainer-mode
+BuildArgs/Debug=--enable-maintainer-mode 'CFLAGS=-g -O0' 'CXXFLAGS=-g -O0' 'JFLAGS=-g -O0' 'FFLAGS=-g -O0'
+BuildArgs/Profiling=--enable-maintainer-mode 'CFLAGS=-g -pg' 'CXXFLAGS=-g -pg' 'JFLAGS=-g -pg' 'FFLAGS=-g -pg'
+BuildArgs/Optimized=--enable-maintainer-mode 'CFLAGS=-O2' 'CXXFLAGS=-O2' 'JFLAGS=-O2' 'FFLAGS=-O2'
+
+[Debugger]
+Stop at beginning=2

@@ -9,12 +9,16 @@
 
 class Sprite {
 	private:
+		uint xOffset;
+		uint yOffset;
 		uint width;
 		uint height;
 		uint textureID;
 	public:
-		Sprite(uint w, uint h, uint texID);
+		Sprite(uint x, uint y, uint w, uint h, uint texID);
 		~Sprite();
+		uint getXOffset();
+		uint getYOffset();
 		uint getWidth();
 		uint getHeight();
 		uint getTextureID();

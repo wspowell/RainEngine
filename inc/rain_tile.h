@@ -7,14 +7,17 @@
 
 class Tile {
 	private:
-		uint size; // how big the tile is, it is square so x=y
-		uint offset; // an offset, if needed, to the top left corner of the tile, 0 is default (ex, a tree tile)
-		// TODO: needs x and y offset 
+		uint xOffset;
+		uint yOffset;
+		uint height;
+		uint width;
 		uint textureID;
 	public:
-		Tile(uint s, uint o, uint t);
+		Tile(uint x, uint y, uint h, uint w, uint t);
 		~Tile();
-		uint getSize();
-		uint getOffset();
+		uint getXOffset();
+		uint getYOffset();
+		uint getWidth();
+		uint getHeight();
 		uint getTextureID();
 };

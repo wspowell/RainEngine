@@ -2,100 +2,59 @@
 
 #include "rain_engine.h"
 
+// test the engine
 int main(int argc, char** argv)
 {
-    // test the gfx engine
+	// initialize the engine	
 	RainEngine rain;
 
-	uint sceneX = 500;
-	uint sceneY = 500;
+	// width, height, mode, AA
+	rain.initWindow(500,500,0,1);
 
-	rain.setWindowSize(sceneX,sceneY);
-	rain.setWindowMode(1);
-	rain.setWindowAA(1);
-
+	// open the window, stop if it fails
 	if(!rain.openWindow()) {
 		fprintf( stderr, "Failed to initialize Rain Engine.\n" );
-	}   
-
+		return -1;
+	}
 	
-
 	// create textures
-	uint null_texture = rain.createTexture("forest.bmp");
+	uint tileset = rain.createTexture("data/textures/null_texture.bmp");
 
 	// use textures to create sprites
-	uint character = rain.createSprite(30,30,null_texture);
+	uint character = rain.createSprite(0,0,30,30,tileset);
 
-	//uint grass = rain.createTile(
+	// use textures to create tiles
+	//uint grass = rain.createTile(0,30,32,32,tileset);
 
-	//int num = 100;
-/*
-	srand(time(NULL));
-	for(int x = 1; x <= num; x++) {
-		int w = rand()%rain.getWindowWidth();
-		int h = rand()%rain.getWindowHeight();
-		rain.createSprite(w,h,30,30,null_texture);
+	// create a scene of r rows and c columns using tilesize s
+	uint forest = rain.createScene(25,25,32); // 800x800px, 1,1 is the first tile grid
+
+	// load tiles into a scene at a specific col,row
+	/*for(uint r = 0; r < rain.getRows(forest); ++r) {
+		for(uint c = 0; c < rain.getCols(forest); ++c) {
+			rain.addTile(forest,grass,r,c); // make the whole scene full of grass
+		}
 	}*/
+	
+	// load sprites into a scene
+	rain.addSprite(forest,character);
 
-	// create a scene
-	uint forest = rain.createScene(800,800);
-
-	// load sprites into a scene/
-	rain.addSpriteToScene(forest,character);
-	/*for(int x = 1; x <= num; x++) {
-		rain.addSpriteToScene(forest,x);
-	}*/
-	// Ensure we can capture the escape key being pressed below
-	glfwEnable( GLFW_STICKY_KEYS );
+	// bind controls to sprite, only one sprite is controllable at a time
+	//rain.bindControl(character);
+	
+	// put the sprite in the middle of the scene
+	// sprites in the scene are positioned by their center
+	rain.setSprite(forest,character,rain.getWidth(forest)/2,rain.getHeight(forest)/2);
 
 	// Use our shader
 	//glUseProgram(programID);
 
-	do {
-		// clear the screen
-		// GL_COLOR_BUFFER_BIT: Indicates the buffers currently enabled for color writing.
-		// GL_DEPTH_BUFFER_BIT: Indicates the depth buffer.
-		// GL_STENCIL_BUFFER_BIT: Indicates the stencil buffer.
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		double framerate = rain.getWindowFrameRate();
-		if(framerate != -1) {
-			printf("%f ms/frame\n",framerate);
-		}
-		
-/*
-		//float r3 = LO + (float)rand()/((float)RAND_MAX/(HI-LO));
-		float LO = 0;
-		float HI = 1;
-		//rain.updateMouse();
-		//rain.updateSprite(character,rain.getMouseXOffset(),rain.getMouseYOffset());
-		srand(time(NULL));
-		float rx,ry,w,h;
-		for(int x = 1; x <= num; x++) {
-			rx = rand()%100;
-			ry = rand()%100;
-			w = LO + (float)rand()/((float)RAND_MAX/(HI-LO));
-			h = LO + (float)rand()/((float)RAND_MAX/(HI-LO));
-			if(rx < 50) { w = w*(-1); }
-			if(ry < 50) { h = h*(-1); }
-			rain.updateSprite(x,w,h);
-		}*/
-		
+	while(rain.running()) {
+		//rain.updateSprite(x,w,h);
 		rain.renderScene(forest); // render forest
-
-
-		//rain.updatePosition(character,1,1); // move character by an offset of +1x,+1y
-
-		//shrubery->render();
-		//character->render();	 
-		
-
-		// Swap buffers
-		glfwSwapBuffers();
-	 
-	} // Check if the ESC key was pressed or the window was closed
-	while( glfwGetKey( GLFW_KEY_ESC ) != GLFW_PRESS && glfwGetWindowParam( GLFW_OPENED ) );
-
+		//rain.updatePosition(character,1,1); // move character by an offset of +1x,+1y		
+	}
+	
 	return 0;
 }
 

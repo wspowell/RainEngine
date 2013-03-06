@@ -46,32 +46,51 @@ class RainEngine {
 		// helper function not exposed but used to aid functionality
 		Window getWindow() { return win; }
 		bool loadTexture(string filename);
-		void renderSprite(uint id);
-
-		Scene* getScene(uint scnID);
-		Sprite* getSprite(uint sprID);
+		void renderQuad(uint x, uint y, uint w, uint h, uint texID);
+		
+		Texture* getTexture(uint texID);
+		Scene* getScene(uint sceneID);
+		Sprite* getSprite(uint spriteID);
+		Tile* getTile(uint tileID);
 
 	public:
 		RainEngine();
 		~RainEngine();
 
+		bool running();
+
 		// Window
+		void initWindow(uint width, uint height, uint mode, uint antialiasing);
 		bool openWindow();
-		void setWindowTitle(const char* t);
-		void setWindowSize(uint w, uint h);
-		void setWindowMode(int m);
-		void setWindowAA(uint a);
-		double getWindowFrameRate();
+		double getFrameRate();
 		uint getWindowWidth();
 		uint getWindowHeight();
 		
-		
+
+		// creating textures, sprites, scenes
 		uint createTexture(string filename);
-		uint createSprite(uint w, uint h, uint texID);
-		uint createScene(uint w, uint h);
-		void addSpriteToScene(uint sceneID, uint spriteID);
+		uint createSprite(uint xOffset, uint yOffset, uint width, uint height, uint textureID);
+		uint createTile(uint xOffset, uint yOffset, uint height, uint width, uint textureID);
+		uint createScene(uint rows, uint columns, uint tilesize);
+
+		// manage textures, sprites, scenes
+		void addSprite(uint sceneID, uint spriteID);
+		void bindControl(uint spriteID);
+		void setSprite(uint sceneID, uint spriteID, uint xPosition, uint yPosition);
+		void moveSprite(uint sceneID, uint spriteID, int xOffset, int yOffset);
+		void addTile(uint sceneID, uint tileID, uint row, uint column);
+		uint getRows(uint sceneID);
+		uint getCols(uint sceneID);
+		uint getWidth(uint sceneID);
+		uint getHeight(uint sceneID);
+
+		// controls
+		
+
+		// render
 		void renderScene(uint sceneID);
 
+		
 		void updateMouse();
 		float getMouseXOffset();
 		float getMouseYOffset();

@@ -3,29 +3,6 @@
 #include "rain_texture.h"
 
 
-
-unsigned char* strrev( unsigned char* s )
-  {
-  unsigned char  c;
-  unsigned char* s0 = s - 1;
-  unsigned char* s1 = s;
-
-  /* Find the end of the string */
-  while (*s1) ++s1;
-
-  /* Reverse it */
-  while (s1-- > ++s0)
-    {
-    c   = *s0;
-    *s0 = *s1;
-    *s1 =  c;
-    }
-
-  return s;
- }
-
-
-
 Texture::Texture() : textureID(0), filename("") { }
 
 Texture::~Texture() { 
@@ -76,7 +53,7 @@ unsigned char* Texture::loadBMP(string fn) {
 	 
 	// Read the actual data from the file into the buffer
 	fread(d,1,imageSize,file);
-	d = strrev(d);
+	
 	//Everything is in memory now, the file can be closed
 	fclose(file);
 
@@ -90,6 +67,10 @@ bool Texture::createTexture(string fn) {
 		fprintf(stderr, "Could not create texture.\n");
 		return false;
 	}
+
+	// Create one OpenGL texture
+	glGenTextures(1, &textureID);
+	
 	return true;
 }
 
@@ -99,9 +80,6 @@ bool Texture::loadTexture() {
 		fprintf(stderr, "Cannot load texture. Data is null.\n");
 		return false;
 	}
-
-	// Create one OpenGL texture
-	glGenTextures(1, &textureID);
 	
 	// "Bind" the newly created texture : all future texture functions will modify this texture
 	glBindTexture(GL_TEXTURE_2D, textureID);

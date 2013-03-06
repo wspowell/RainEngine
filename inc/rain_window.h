@@ -28,6 +28,7 @@ class Window {
 	public:
 		Window();
 		~Window();
+		void init(uint w, uint h, uint m, uint a);
 		bool open(); // when the window opens it uses values set by the 'set' functions
 		void setTitle(const char* t);
 		void setHeight(uint h);

@@ -7,73 +7,40 @@
 #include <vector>
 #include <map>
 #include <stdio.h>
+#include "rain_coordinate.h"
 #include "rain_types.h"
 
-// for sprites
-class Coordinate {
-	private:
-		uint xLoc;
-		uint yLoc;
-	public:
-		Coordinate(uint x, uint y);
-		~Coordinate();
-		uint getX();
-		uint getY();
-		void setX(uint x);
-		void setY(uint y);
-};
 
-// keeps track of sprite locations, this is so that sprites can be reused in multiple scenes
-// key is the spriteID, value is the Coordinate the sprite is at
-typedef std::map<uint,Coordinate*> coordinateMap;
-typedef coordinateMap::value_type coordinateValType;
-typedef coordinateMap::iterator coordinateMapItor;
-
-// for tiles
-class Location {
-	private:
-		uint col;
-		uint row;
-	public:
-		Location(uint c, uint r);
-		~Location();
-		uint getCol();
-		uint getRow();
-		void setCol(uint c);
-		void setRow(uint r);
-};
-
-// keeps track of tile locations, this is so that tiles can be reused in multiple scenes
-// key is the tileID, value is the Location the tile is at 
-typedef std::map<uint,Location*> locationMap;
-typedef locationMap::value_type locationValType;
-typedef locationMap::iterator locationMapItor;
 
 class Scene {
 	private:
-		uint cols;
 		uint rows;
+		uint cols;
+		uint tilesize;
 		uintVector sprites; // the sprites in this scene
 		coordinateMap spriteCoords; // coordinates of sprites
 		uintVector tiles; // tiles
-		locationMap tileLocs; // locations of tiles
+		coordinateMap tileCoords; // locations of tiles
 	public:
-		Scene(uint w, uint h);
+		Scene(uint r, uint c, uint t);
 		~Scene();
 
-		int hasSprite(uint spriteID);
 		void addSprite(uint spriteID);
 		void removeSprite(uint spriteID);
-		void moveSprite(uint spriteID, uint x, uint y);
+		void moveSprite(uint spriteID, int x, int y);
 		void setSprite(uint spriteID, uint x, uint y);
 		uintVector getSprites();
+		coordinateMap getSpriteCoords();
+		
 
-		int hasTile(uint tileID);
-		void addTile(uint tileID);
+		void addTile(uint tileID, uint r, uint c);
 		void removeTile(uint tileID);
-		void moveTile(uint tileID, uint c, uint r);
-		void setTile(uint tileID, uint c, uint r);
 		uintVector getTiles();
+
+		uint getRows();
+		uint getCols();
+		uint getWidth();
+		uint getHeight();
 };
 
 
@@ -84,13 +51,13 @@ class Scene {
 
 // refit the sprite so that it uses the center instead of the corner
 
-// tiles are referenced by the to left corner
+// tiles are referenced by the to left corner and are placed in a (row,col) bin on the grid
 
 // for a tree that is bigger than a tile, the tile is given an offset so that the program knows
-// where the tile is meant to be centered at
+// where the tile is meant to be centered at. the part the is oversized just overlays other tiles
 
-// tiles need a flag to show that it is an object, this way they are loaded last (from top to bottom)
-// so that they overlap properly
+// check if tile is 'oversized' (bigger x or y than the tilesize),these are 
+// loaded last (from top to bottom) so that they overlap properly
 
 
 

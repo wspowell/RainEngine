@@ -2,7 +2,7 @@
 
 #include "rain_window.h"
 
-Window::Window() : WINDOW_TITLE("Rain: Window"), WINDOW_HEIGHT(700), WINDOW_WIDTH(1200), WINDOW_MODE(GLFW_WINDOW), ANTIALIASING(1) {
+Window::Window() : WINDOW_TITLE("Rain: Window"), WINDOW_HEIGHT(600), WINDOW_WIDTH(800), WINDOW_MODE(GLFW_WINDOW), ANTIALIASING(1) {
 	printf("Initializing window...\n");
 }
 
@@ -52,6 +52,13 @@ void GLFWCALL Window::resize(int width, int height) {
 	glfwSetWindowSize(width, height);
 }
 
+void Window::init(uint w, uint h, uint m, uint a) {
+	WINDOW_WIDTH = w;
+	WINDOW_HEIGHT = h;
+	setMode(m);
+	ANTIALIASING = a;
+}
+
 bool Window::open() {
 	// Initialise GLFW
 	if( !glfwInit() )
@@ -62,7 +69,7 @@ bool Window::open() {
 
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, ANTIALIASING); // 4x antialiasing
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 4); // We want OpenGL 4.1
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 0);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
 	glfwOpenWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
@@ -101,6 +108,9 @@ bool Window::open() {
 	printf("width %u height %u mode %d aa %u\n",WINDOW_WIDTH,WINDOW_HEIGHT,WINDOW_MODE,ANTIALIASING);	
 	printf("Window opened successfully\n");
 
+	// Ensure we can capture the escape key being pressed below
+	glfwEnable( GLFW_STICKY_KEYS );
+	
 	// set clear color
 	glClearColor(0,0,0,0);
 	// set clear depth
