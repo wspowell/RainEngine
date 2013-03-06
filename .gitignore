@@ -17,3 +17,5 @@
 
 # IDE
 *.anjuta
+*.db
+*anjuta*
