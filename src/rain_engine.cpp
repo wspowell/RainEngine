@@ -1,9 +1,9 @@
-//
+// rain engine
 
 #include "rain_engine.h"
 
 
-RainEngine::RainEngine() : sceneID(0), spriteID(0), textureID(0) { 
+RainEngine::RainEngine() : sceneID(0), spriteID(0), tileID(0), textureID(0) { 
 	printf("Initializing engine...\n");
 }
 RainEngine::~RainEngine() { }
@@ -73,17 +73,24 @@ uint RainEngine::createTexture(string filename) {
 
 	return textureID;
 }
-
-uint RainEngine::createSprite(uint x, uint y, uint w, uint h, uint texID) {
-	Sprite *spr = new Sprite(x,y,w,h,texID); // setup the sprite
+ 
+uint RainEngine::createSprite(uint xOffset, uint yOffset, uint w, uint h, uint texID) {
+	Texture *tex = getTexture(textureID);
+	uint texH = tex->getHeight();
+	uint texW = tex->getWidth();
+	// the '-1' in the next line is to offset the sprite to screen coordinate (0,0). (*2 because its TWO across)
+	Sprite *spr = new Sprite((GLfloat)xOffset/texW,(GLfloat)yOffset/texH,w,h,((GLfloat)w/win.getWidth())*2,((GLfloat)h/win.getHeight())*2,texID); // setup the sprite
 	++spriteID; // the spriteID is the next number in the series
 	sprites.insert(spriteValType(spriteID,spr)); // add sprite to the map
-	printf("Created sprite (id:%u) width %u height %u with texture (id:%u)@(%u,%u)\n",spriteID,w,h,texID,x,y);
+	printf("Created sprite (id:%u) width %u height %u with texture (id:%u)@(%u,%u)\n",spriteID,w,h,texID,xOffset,yOffset);
 	return spriteID;
 }
   
-uint RainEngine::createTile(uint xOffset, uint yOffset, uint height, uint width, uint textureID) {
-	Tile *tl = new Tile(xOffset,yOffset,height,width,textureID);
+uint RainEngine::createTile(uint xOffset, uint yOffset, uint width, uint height, uint textureID) {
+	Texture *tex = getTexture(textureID);
+	uint texH = tex->getHeight();
+	uint texW = tex->getWidth();
+	Tile *tl = new Tile((GLfloat)xOffset/texW,(GLfloat)yOffset/texH,width,height,((GLfloat)width/win.getWidth())*2,((GLfloat)height/win.getHeight())*2,textureID);
 	++tileID;
 	tiles.insert(tileValType(tileID,tl));
 	printf("Created tile (id:%u)\n",tileID);
@@ -92,16 +99,13 @@ uint RainEngine::createTile(uint xOffset, uint yOffset, uint height, uint width,
 
 void RainEngine::addTile(uint scnID, uint tlID, uint row, uint col) {
 	Scene *scn = getScene(scnID);
-	Tile *tl = getTile(tlID);
-	if(scn != NULL && tl != NULL) {
-		// add sprite to the scene
-		scn->addTile(tlID,row,col);
-		printf("Added tile (id:%u) to scene (id:%u)\n",tlID,scnID);
-	}
+	// add sprite to the scene
+	scn->addTile(tlID,row,col);
+	printf("Added tile (id:%u) to scene (id:%u) @ grid(%u,%u)\n",tlID,scnID,row,col); 
 }
 
 uint RainEngine::createScene(uint rows, uint columns, uint tilesize) {
-	Scene *scn = new Scene(rows,columns,tilesize);
+	Scene *scn = new Scene(rows,columns,((GLfloat)tilesize/win.getWidth())*2);
 	++sceneID;
 	scenes.insert(sceneValType(sceneID,scn));
 	printf("Created scene (id:%u)\n",sceneID);
@@ -110,12 +114,8 @@ uint RainEngine::createScene(uint rows, uint columns, uint tilesize) {
 
 void RainEngine::addSprite(uint scnID, uint sprID) {
 	Scene *scn = getScene(scnID);
-	Sprite *spr = getSprite(sprID);
-	if(scn != NULL && spr != NULL) {
-		// add sprite to the scene
-		scn->addSprite(sprID);
-		printf("Added sprite (id:%u) to scene (id:%u)\n",sprID,scnID);
-	}
+	scn->addSprite(sprID);
+	printf("Added sprite (id:%u) to scene (id:%u)\n",sprID,scnID);
 }
 
 Texture* RainEngine::getTexture(uint texID) {
@@ -193,53 +193,69 @@ void RainEngine::renderScene(uint scnID) {
 		fprintf(stderr, "Could not render scene (id:%u)\n",scnID);
 		return; 
 	}
-	
-	//renderSprite(scn->getBackground());
 
-	uintVector sceneSprites = scn->getSprites();
-	coordinateMap spriteCoords = scn->getSpriteCoords();
-	for(uintVecItor itor = sceneSprites.begin(); itor != sceneSprites.end(); ++itor) {
-		//renderSprite(*itor);
-		Sprite *spr = getSprite((*itor));
-		uint w = spr->getWidth();
-		uint h = spr->getHeight();
-		uint texID = spr->getTextureID();
+	coordinateTileMap tileCoords = scn->getTileCoords();
+	for(coordinateTileMapItor itor = tileCoords.begin(); itor != tileCoords.end(); ++itor) {
+		// render tiles as quads
+		uint tlID = (*itor).second;
+		Tile *tl = getTile(tlID);
+		GLfloat w = tl->getWidthScaled();
+		GLfloat h = tl->getHeightScaled();
+		uint texID = tl->getTextureID();
 		
-		coordinateMapItor pos = spriteCoords.find((*itor));
-		uint x = (*pos).second->getX();
-		uint y = (*pos).second->getY();
+		Texture *tex = getTexture(texID);
+		GLfloat tw = (GLfloat)tl->getWidth()/tex->getWidth();
+		GLfloat th = (GLfloat)tl->getHeight()/tex->getHeight();
+		GLfloat tileXoffset = tl->getXOffset();
+		GLfloat tileYoffset = tl->getYOffset();
+		
+		GLfloat x = (*itor).first->getX(); // get tile coordinate
+		GLfloat y = (*itor).first->getY();
 
-		renderQuad(x,y,w,h,texID);
+		renderQuad(x,y,w,h,tileXoffset,tileYoffset,tw,th,texID);
+	}
+	
+	coordinateMap spriteCoords = scn->getSpriteCoords();
+	for(coordinateMapItor itor = spriteCoords.begin(); itor != spriteCoords.end(); ++itor) {
+		// render sprites as quads
+		uint sprID = (*itor).first;
+		Sprite *spr = getSprite(sprID);
+		GLfloat w = spr->getWidthScaled();
+		GLfloat h = spr->getHeightScaled();
+		uint texID = spr->getTextureID();
+
+		Texture *tex = getTexture(texID);
+		GLfloat tw = (GLfloat)spr->getWidth()/tex->getWidth();
+		GLfloat th = (GLfloat)spr->getHeight()/tex->getHeight();
+		GLfloat spriteXoffset = spr->getXOffset();
+		GLfloat spriteYoffset = spr->getYOffset();
+		
+		GLfloat x = (*itor).second->getXScaled(); // find x,y coordinate scaled to opengl
+		GLfloat y = (*itor).second->getYScaled();
+
+		renderQuad(x,y,w,h,spriteXoffset,spriteYoffset,tw,th,texID);
 	}
 }
 
-void RainEngine::renderQuad(uint x, uint y, uint w, uint h, uint texID) {
-	// TODO: use window coordinates, right now it is using opengl coordinates
-	GLfloat x_scaled = ((GLfloat)x/win.getWidth())*2-1; // top left x
-	GLfloat y_scaled = 1-(((GLfloat)y)/win.getHeight())*2; // top left y
-	GLfloat width_scaled = x_scaled+((GLfloat)w/win.getWidth())*2; // width of sprite
-	GLfloat height_scaled = y_scaled+((GLfloat)h/win.getHeight())*2; // negative height, (*2 because its TWO across)
-
-	//printf("Rendering Quad @ (%f,%f) with dimensions (%f,%f) and texture (id:%u)\n",x_scaled,y_scaled,width_scaled,height_scaled,texID);
+void RainEngine::renderQuad(GLfloat x, GLfloat y, GLfloat w, GLfloat h, GLfloat xOffset, GLfloat yOffset, GLfloat tWidth, GLfloat tHeight, uint texID) {
+	//printf("Rendering Quad @ (%f,%f) with dimensions (%f,%f) and texture (id:%u) @ (%f,%f) with dimensions (%f,%f)\n",x,y,w,h,texID,xOffset,yOffset,tWidth,tHeight);
 
 	// bind the proper texture (check to see if it has already been bound?)
 	Texture *tex = getTexture(texID);
 	tex->loadTexture();
-
+	
 	// draw the quad
 	glBegin (GL_QUADS);
-	glColor3f(1.0,0.5,0.0);//set red 100% green 50% blue 0%
-	glTexCoord2f (0, 0);
-	glVertex2f (x_scaled, y_scaled);
-	glTexCoord2f (1.0, 0.0);
-	glVertex2f (width_scaled, y_scaled);
-	glTexCoord2f (1.0, 1.0);
-	glVertex2f (width_scaled, height_scaled);
-	glTexCoord2f (0.0, 1.0);
-	glVertex2f (x_scaled, height_scaled);
+	glTexCoord2f (xOffset, yOffset);
+	glVertex2f (x, y);
+	glTexCoord2f (xOffset+tWidth, yOffset);
+	glVertex2f (x+w, y);
+	glTexCoord2f (xOffset+tWidth, yOffset+tHeight);
+	glVertex2f (x+w, y-h);
+	glTexCoord2f (xOffset, yOffset+tHeight);
+	glVertex2f (x, y-h);
 	glEnd ();
 }
-
 
 void RainEngine::updateMouse() {
 	//mse.update();

@@ -46,7 +46,7 @@ class RainEngine {
 		// helper function not exposed but used to aid functionality
 		Window getWindow() { return win; }
 		bool loadTexture(string filename);
-		void renderQuad(uint x, uint y, uint w, uint h, uint texID);
+		void renderQuad(GLfloat x, GLfloat y, GLfloat w, GLfloat h, GLfloat xOffset, GLfloat yOffset, GLfloat tWidth, GLfloat tHeight, uint texID);
 		
 		Texture* getTexture(uint texID);
 		Scene* getScene(uint sceneID);
@@ -70,7 +70,7 @@ class RainEngine {
 		// creating textures, sprites, scenes
 		uint createTexture(string filename);
 		uint createSprite(uint xOffset, uint yOffset, uint width, uint height, uint textureID);
-		uint createTile(uint xOffset, uint yOffset, uint height, uint width, uint textureID);
+		uint createTile(uint xOffset, uint yOffset, uint width, uint height, uint textureID);
 		uint createScene(uint rows, uint columns, uint tilesize);
 
 		// manage textures, sprites, scenes

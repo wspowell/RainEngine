@@ -31,7 +31,7 @@ unsigned char* Texture::loadBMP(string fn) {
 	if(header[0]!='B' || header[1]!='M' ){
     	printf("Not a correct BMP file\n");
     	return NULL;
-	}
+	} 
 
 	// Read ints from the byte array
 	dataPos    = *(int*)&(header[0x0A]);
@@ -40,11 +40,11 @@ unsigned char* Texture::loadBMP(string fn) {
 	height     = *(int*)&(header[0x16]);
 
 	// Some BMP files are misformatted, guess missing information
-	if(imageSize==0) {
-		imageSize=width*height*3; // 3 : one byte for each Red, Green and Blue component
+	if(imageSize == 0) {
+		imageSize = width*height*3; // 3 : one byte for each Red, Green and Blue component
 	}
-	if(dataPos==0) {
-		dataPos=54; // The BMP header is done that way
+	if(dataPos == 0) {
+		dataPos = 54; // The BMP header is done that way
 	}
 
 	// Create a buffer
@@ -87,13 +87,14 @@ bool Texture::loadTexture() {
 	// Give the image to OpenGL
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+	
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
 	glEnable (GL_TEXTURE_2D);
@@ -186,6 +187,15 @@ GLuint Texture::loadShaders(const char * vertex_file_path,const char * fragment_
 string Texture::getFilename() {
 	return filename;
 }
+
+uint Texture::getHeight() {
+	return height;
+}
+
+uint Texture::getWidth() {
+	return width;
+}
+
 
 
 

@@ -34,7 +34,8 @@ class Texture {
 		string getFilename();
 		GLuint getTextureID();
 		GLuint loadShaders(const char * vertex_file_path,const char * fragment_file_path);
-		void render();
+		uint getHeight();
+		uint getWidth();
 };
 
 #endif

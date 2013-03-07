@@ -9,7 +9,7 @@ int main(int argc, char** argv)
 	RainEngine rain;
 
 	// width, height, mode, AA
-	rain.initWindow(500,500,0,1);
+	rain.initWindow(960,960,0,1); //480
 
 	// open the window, stop if it fails
 	if(!rain.openWindow()) {
@@ -18,23 +18,34 @@ int main(int argc, char** argv)
 	}
 	
 	// create textures
-	uint tileset = rain.createTexture("data/textures/null_texture.bmp");
+	uint tileset = rain.createTexture("data/textures/tileset3.bmp");
+	//uint grass1 = rain.createTexture("data/textures/grass1.bmp");
+	//uint grass2 = rain.createTexture("data/textures/grass2.bmp");
 
 	// use textures to create sprites
-	uint character = rain.createSprite(0,0,30,30,tileset);
+	uint character = rain.createSprite(0,32,64,64,tileset);
 
 	// use textures to create tiles
-	//uint grass = rain.createTile(0,30,32,32,tileset);
-
+	//uint grass = rain.createTile(0,0,30,30,tileset);
+	uint grass1 = rain.createTile(0,0,32,32,tileset);
+	uint grass2 = rain.createTile(32,0,32,32,tileset);
+	
 	// create a scene of r rows and c columns using tilesize s
-	uint forest = rain.createScene(25,25,32); // 800x800px, 1,1 is the first tile grid
+	uint forest = rain.createScene(25,25,32); // 800x800px
 
 	// load tiles into a scene at a specific col,row
-	/*for(uint r = 0; r < rain.getRows(forest); ++r) {
-		for(uint c = 0; c < rain.getCols(forest); ++c) {
-			rain.addTile(forest,grass,r,c); // make the whole scene full of grass
+	// initialize random seed
+  	srand (time(NULL));
+	
+	for(uint r = 0; r < 60; ++r) {
+		for(uint c = 0; c < 34; ++c) { //rain.getCols(forest)
+			uint rnum = rand()%10+1;
+			uint tile;
+			if(rnum <= 7) { tile = grass1; }
+			else { tile = grass2; }
+			rain.addTile(forest,tile,r,c); // make the whole scene full of grass
 		}
-	}*/
+	}
 	
 	// load sprites into a scene
 	rain.addSprite(forest,character);
@@ -44,7 +55,7 @@ int main(int argc, char** argv)
 	
 	// put the sprite in the middle of the scene
 	// sprites in the scene are positioned by their center
-	rain.setSprite(forest,character,rain.getWidth(forest)/2,rain.getHeight(forest)/2);
+	//rain.setSprite(forest,character,200,200);
 
 	// Use our shader
 	//glUseProgram(programID);

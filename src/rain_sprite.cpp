@@ -2,15 +2,15 @@
 
 #include "rain_sprite.h"
 
-Sprite::Sprite(uint x, uint y, uint w, uint h, uint texID) : xOffset(x), yOffset(y), width(w), height(h), textureID(texID) { }
+Sprite::Sprite(GLfloat x, GLfloat y, uint w, uint h, GLfloat ws, GLfloat hs, uint texID) : xOffset(x), yOffset(y), width(w), height(h), widthScaled(ws), heightScaled(hs), textureID(texID) { }
 
 Sprite::~Sprite() { }
 
-uint Sprite::getXOffset() {
+GLfloat Sprite::getXOffset() {
 	return xOffset;
 }
 
-uint Sprite::getYOffset() {
+GLfloat Sprite::getYOffset() {
 	return yOffset;
 }
 
@@ -22,8 +22,15 @@ uint Sprite::getHeight() {
 	return height;
 }
 
+GLfloat Sprite::getWidthScaled() {
+	return widthScaled;
+}
+
+GLfloat Sprite::getHeightScaled() {
+	return heightScaled;
+}
+
 uint Sprite::getTextureID() {
 	return textureID;
 }
-
 

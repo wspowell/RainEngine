@@ -11,24 +11,24 @@
 #include "rain_types.h"
 
 
-
+ 
 class Scene {
 	private:
 		uint rows;
 		uint cols;
-		uint tilesize;
+		GLfloat tilesize;
 		uintVector sprites; // the sprites in this scene
 		coordinateMap spriteCoords; // coordinates of sprites
 		uintVector tiles; // tiles
-		coordinateMap tileCoords; // locations of tiles
+		coordinateTileMap tileCoords; // locations of tiles
 	public:
-		Scene(uint r, uint c, uint t);
+		Scene(uint r, uint c, GLfloat t);
 		~Scene();
 
 		void addSprite(uint spriteID);
 		void removeSprite(uint spriteID);
-		void moveSprite(uint spriteID, int x, int y);
-		void setSprite(uint spriteID, uint x, uint y);
+		void moveSprite(uint spriteID, GLfloat x, GLfloat y);
+		void setSprite(uint spriteID, GLfloat x, GLfloat y);
 		uintVector getSprites();
 		coordinateMap getSpriteCoords();
 		
@@ -36,11 +36,12 @@ class Scene {
 		void addTile(uint tileID, uint r, uint c);
 		void removeTile(uint tileID);
 		uintVector getTiles();
+		coordinateTileMap getTileCoords();
 
 		uint getRows();
 		uint getCols();
-		uint getWidth();
-		uint getHeight();
+		GLfloat getWidth();
+		GLfloat getHeight();
 };
 
 

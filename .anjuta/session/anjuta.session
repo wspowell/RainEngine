@@ -4,12 +4,14 @@ Maximized=1
 Geometry=1920x1056+0+24
 
 [File Loader]
-Files=file:///home/wpowell/RainEngine/RainEngine/inc/rain_engine.h#71%%%file:///home/wpowell/RainEngine/RainEngine/inc/rain_scene.h#30%%%file:///home/wpowell/RainEngine/RainEngine/inc/rain_sprite.h#4%%%file:///home/wpowell/RainEngine/RainEngine/inc/rain_texture.h#1%%%file:///home/wpowell/RainEngine/RainEngine/inc/rain_tile.h#1%%%file:///home/wpowell/RainEngine/RainEngine/src/rain.cpp#27%%%file:///home/wpowell/RainEngine/RainEngine/src/rain_engine.cpp#81%%%file:///home/wpowell/RainEngine/RainEngine/src/rain_scene.cpp#63%%%file:///home/wpowell/RainEngine/RainEngine/src/rain_sprite.cpp#15%%%file:///home/wpowell/RainEngine/RainEngine/src/rain_texture.cpp#1%%%file:///home/wpowell/RainEngine/RainEngine/src/rain_tile.cpp#1
+Files=file:///home/wpowell/RainEngine/RainEngine/inc/rain_engine.h#51%%%file:///home/wpowell/RainEngine/RainEngine/inc/rain_scene.h#33%%%file:///home/wpowell/RainEngine/RainEngine/inc/rain_sprite.h#19%%%file:///home/wpowell/RainEngine/RainEngine/inc/rain_texture.h#1%%%file:///home/wpowell/RainEngine/RainEngine/inc/rain_tile.h#22%%%file:///home/wpowell/RainEngine/RainEngine/src/rain.cpp#12%%%file:///home/wpowell/RainEngine/RainEngine/src/rain_engine.cpp#187%%%file:///home/wpowell/RainEngine/RainEngine/src/rain_scene.cpp#62%%%file:///home/wpowell/RainEngine/RainEngine/src/rain_sprite.cpp#27%%%file:///home/wpowell/RainEngine/RainEngine/src/rain_texture.cpp#82%%%file:///home/wpowell/RainEngine/RainEngine/src/rain_tile.cpp#22%%%file:///home/wpowell/RainEngine/RainEngine/inc/rain_coordinate.h#9%%%file:///home/wpowell/RainEngine/RainEngine/src/rain_coordinate.cpp#3
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
 
 [Execution]
+Program arguments=
+Program uri=file:///home/wpowell/RainEngine/RainEngine/rain
 Run in terminal=2
 Working directories=file:///home/wpowell/RainEngine/RainEngine
 

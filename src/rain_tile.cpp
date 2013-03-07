@@ -4,15 +4,15 @@
 #include "rain_tile.h"
 
 
-Tile::Tile(uint x, uint y, uint h, uint w, uint t) : xOffset(x), yOffset(y), height(h), width(w), textureID(t) { }
+Tile::Tile(GLfloat x, GLfloat y, uint w, uint h, GLfloat ws, GLfloat hs, uint texID) : xOffset(x), yOffset(y), width(w), height(h), widthScaled(ws), heightScaled(hs), textureID(texID) { }
 
 Tile::~Tile() { }
 
-uint Tile::getXOffset() {
+GLfloat Tile::getXOffset() {
 	return xOffset;
 }
 
-uint Tile::getYOffset() {
+GLfloat Tile::getYOffset() {
 	return yOffset;
 }
 
@@ -22,6 +22,14 @@ uint Tile::getWidth() {
 
 uint Tile::getHeight() {
 	return height;
+}
+
+GLfloat Tile::getWidthScaled() {
+	return widthScaled;
+}
+
+GLfloat Tile::getHeightScaled() {
+	return heightScaled;
 }
 
 uint Tile::getTextureID() {

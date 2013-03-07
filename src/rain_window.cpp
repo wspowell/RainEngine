@@ -75,7 +75,7 @@ bool Window::open() {
 	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
 
 	// Open a window and create its OpenGL context
-	if( !glfwOpenWindow( WINDOW_WIDTH, WINDOW_HEIGHT, 8,8,8,0, 8,0, WINDOW_MODE ) )
+	if( !glfwOpenWindow( WINDOW_WIDTH, WINDOW_HEIGHT, 8,8,8,8, 0,0, WINDOW_MODE ) )
 	{
 		fprintf( stderr, "Failed to open GLFW window\n" );
 		glfwTerminate();
@@ -118,7 +118,10 @@ bool Window::open() {
 	// set clear stencil buffer
 	glClearStencil(0);
 
-	glScalef(1.0f, -1.0f, 1.0f);
+	//glViewport(0, 0, WINDOW_HEIGHT, WINDOW_WIDTH);  // aspect ratio 1:1.333
+	//glOrtho(0.5f, -0.5f, -0.666f, 0.666f, -1.0f, 1.0f); // matching aspect ratio with 0,0 centered
+	
+	glScalef(1.0f, 1.0f, 1.0f);
 
 	// Create vertex array object
 	glGenVertexArrays(1, &vaoID);
